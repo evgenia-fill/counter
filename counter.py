@@ -1,1 +1,1 @@
-print('pypypypypy')
+print(3)
