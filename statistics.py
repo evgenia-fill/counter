@@ -1,13 +1,5 @@
-from aiohttp import web
-import os
-import json
-from datetime import datetime
-from collections import defaultdict
-from data import Data
-
-
 class Statistics:
-    def __init__(self, data_store: Data):
+    def __init__(self, data_store):
         self.data = data_store.data
 
     def get_stats(self, period='total'):
@@ -40,3 +32,6 @@ class Statistics:
                     'unique': len(self.data['unique_daily'].get(day, set()))
                 } for day in self.data['daily']
             }
+
+        else:
+            return {'error': 'Invalid period'}
