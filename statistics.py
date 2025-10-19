@@ -33,5 +33,13 @@ class Statistics:
                 } for day in self.data['daily']
             }
 
+        elif period == 'regionally':
+            return {
+                region: {
+                    'total': self.data['by_region'][region],
+                    'unique': len(self.data['unique_by_region'].get(region, set()))
+                } for region in self.data['by_region']
+            }
+
         else:
             return {'error': 'Invalid period'}

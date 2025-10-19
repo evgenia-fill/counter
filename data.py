@@ -13,20 +13,21 @@ class Data:
             with open(self.storage_file, 'r', encoding='utf-8') as f:
                 raw = json.load(f)
 
-            # Преобразуем JSON обратно в правильные структуры
             raw['unique_total'] = set(raw.get('unique_total', []))
 
             for key in ['unique_daily', 'unique_monthly', 'unique_yearly']:
-                raw[key] = defaultdict(set, {
-                    k: set(v) for k, v in raw.get(key, {}).items()
-                })
+                raw[key] = defaultdict(set, {k: set(v) for k, v in raw.get(key, {}).items()})
 
             for key in ['daily', 'monthly', 'yearly']:
                 raw[key] = defaultdict(int, raw.get(key, {}))
 
+            raw['by_region'] = defaultdict(int, raw.get('by_region', {}))
+            raw['unique_by_region'] = defaultdict(set, {
+                k: set(v) for k, v in raw.get('unique_by_region', {}).items()
+            })
+
             return raw
 
-        # Начальные данные
         return {
             'total': 0,
             'unique_total': set(),
@@ -35,7 +36,9 @@ class Data:
             'yearly': defaultdict(int),
             'unique_daily': defaultdict(set),
             'unique_monthly': defaultdict(set),
-            'unique_yearly': defaultdict(set)
+            'unique_yearly': defaultdict(set),
+            'by_region': defaultdict(int),
+            'unique_by_region': defaultdict(set)
         }
 
     def save(self):
@@ -48,6 +51,8 @@ class Data:
             'unique_daily': {k: list(v) for k, v in self.data['unique_daily'].items()},
             'unique_monthly': {k: list(v) for k, v in self.data['unique_monthly'].items()},
             'unique_yearly': {k: list(v) for k, v in self.data['unique_yearly'].items()},
+            'by_region': dict(self.data['by_region']),
+            'unique_by_region': {k: list(v) for k, v in self.data['unique_by_region'].items()}
         }
 
         with open(self.storage_file, 'w', encoding='utf-8') as f:
