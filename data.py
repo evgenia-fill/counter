@@ -9,37 +9,29 @@ class Data:
         self.data = self.load()
 
     def load(self):
-        if os.path.exists(self.storage_file):
+        if os.path.exists(self.storage_file) and os.path.getsize(self.storage_file) > 0:
             with open(self.storage_file, 'r', encoding='utf-8') as f:
-                raw = json.load(f)
+                try:
+                    raw = json.load(f)
+                except json.JSONDecodeError:
+                    raw = {}
+        else:
+            raw = {}
 
-            raw['unique_total'] = set(raw.get('unique_total', []))
+        raw['unique_total'] = set(raw.get('unique_total', []))
 
-            for key in ['unique_daily', 'unique_monthly', 'unique_yearly']:
-                raw[key] = defaultdict(set, {k: set(v) for k, v in raw.get(key, {}).items()})
+        for key in ['unique_daily', 'unique_monthly', 'unique_yearly']:
+            raw[key] = defaultdict(set, {k: set(v) for k, v in raw.get(key, {}).items()})
 
-            for key in ['daily', 'monthly', 'yearly']:
-                raw[key] = defaultdict(int, raw.get(key, {}))
+        for key in ['daily', 'monthly', 'yearly', 'by_region']:
+            raw[key] = defaultdict(int, raw.get(key, {}))
 
-            raw['by_region'] = defaultdict(int, raw.get('by_region', {}))
-            raw['unique_by_region'] = defaultdict(set, {
-                k: set(v) for k, v in raw.get('unique_by_region', {}).items()
-            })
+        raw['unique_by_region'] = defaultdict(set, {k: set(v) for k, v in raw.get('unique_by_region', {}).items()})
 
-            return raw
+        if 'total' not in raw:
+            raw['total'] = 0
 
-        return {
-            'total': 0,
-            'unique_total': set(),
-            'daily': defaultdict(int),
-            'monthly': defaultdict(int),
-            'yearly': defaultdict(int),
-            'unique_daily': defaultdict(set),
-            'unique_monthly': defaultdict(set),
-            'unique_yearly': defaultdict(set),
-            'by_region': defaultdict(int),
-            'unique_by_region': defaultdict(set)
-        }
+        return raw
 
     def save(self):
         data_to_save = {
