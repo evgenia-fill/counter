@@ -1,5 +1,5 @@
 {
-  "total": 109,
+  "total": 140,
   "unique_total": [
     "::1"
   ],
@@ -7,14 +7,14 @@
     "2025-09-11": 17,
     "2025-10-05": 5,
     "2025-10-06": 13,
-    "2025-10-19": 74
+    "2025-10-19": 105
   },
   "monthly": {
     "2025-09": 17,
-    "2025-10": 92
+    "2025-10": 123
   },
   "yearly": {
-    "2025": 109
+    "2025": 140
   },
   "unique_daily": {
     "2025-09-11": [
@@ -45,13 +45,21 @@
   },
   "by_region": {
     "Unknown": 65,
-    "Localhost": 9
+    "Localhost": 40
   },
   "unique_by_region": {
     "Unknown": [
       "::1"
     ],
     "Localhost": [
+      "::1"
+    ]
+  },
+  "by_browser": {
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36": 19
+  },
+  "unique_by_browser": {
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36": [
       "::1"
     ]
   }

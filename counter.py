@@ -25,7 +25,7 @@ class VisitCounter:
             pass
         return "Unknown"
 
-    def add_visit(self, visitor_id, region="Unknown"):
+    def add_visit(self, visitor_id, region="Unknown", browser="Unknown"):
         now = datetime.now()
         day_key = now.strftime('%Y-%m-%d')
         month_key = now.strftime('%Y-%m')
@@ -46,6 +46,9 @@ class VisitCounter:
         self.data['by_region'][region] += 1
         self.data['unique_by_region'][region].add(visitor_id)
 
+        self.data['by_browser'][browser] += 1
+        self.data['unique_by_browser'][browser].add(visitor_id)
+
         self.data.save()
 
     def get_stats(self, period='total'):
@@ -55,12 +58,15 @@ class VisitCounter:
 async def visit_handler(request):
     visitor_ip = request.remote or "127.0.0.1"
     region = await request.app['counter'].get_region_from_ip(visitor_ip)
-    request.app['counter'].add_visit(visitor_ip, region)
+    browser = request.headers.get("User-Agent", "Unknown")
+    request.app['counter'].add_visit(visitor_ip, region, browser)
+
     stats = request.app['counter'].get_stats('total')
     content = f"""
     <div class="stats">
         <p><strong>Ваш IP:</strong> {visitor_ip}</p>
         <p><strong>Страна:</strong> {region}</p>
+        <p><strong>Браузер:</strong> {browser}</p>
         <p><strong>Общее количество посещений:</strong> {stats['total']}</p>
         <p><strong>Уникальных посетителей:</strong> {stats['unique']}</p>
     </div>
@@ -98,6 +104,7 @@ def html_page(title, content):
                     <a href="/stats?period=monthly">🗓 По месяцам</a>
                     <a href="/stats?period=yearly">📆 По годам</a>
                     <a href="/stats?period=regionally">🗺️ По странам/регионам</a>
+                    <a href="/stats?period=by_browser">🌎 По браузерам</a>
                 </p>
             </footer>
         </body>
@@ -109,7 +116,7 @@ async def stats_handler(request):
     try:
         period = request.query.get('period', 'total')
         output_format = request.query.get('format', 'html')
-        if period not in ['total', 'yearly', 'monthly', 'daily', 'regionally']:
+        if period not in ['total', 'yearly', 'monthly', 'daily', 'regionally', 'by_browser']:
             return web.json_response({'error': 'Invalid period. Use: total, yearly, monthly, daily'}, status=400)
 
         stats = request.app['counter'].get_stats(period)
@@ -178,6 +185,7 @@ async def index_handler(request):
         <li><a href="/stats?period=monthly">🗓 По месяцам</a></li>
         <li><a href="/stats?period=yearly">📆 По годам</a></li>
         <li><a href="/stats?period=regionally">️🗺 По странам/регионам</a></li>
+        <li><a href="/stats?period=by_browser">️🌎 По браузерам</a></li>
     </ul>
     """
     return web.Response(text=html_page("Главная", content), content_type='text/html')
@@ -204,4 +212,5 @@ if __name__ == '__main__':
     print("   http://localhost:8085/stats?period=monthly - Статистика по месяцам")
     print("   http://localhost:8085/stats?period=yearly - Статистика по годам")
     print("   http://localhost:8085/stats?period=regionally - Статистика по странам/регионам")
+    print("   http://localhost:8085/stats?period=by_browser - Статистика по браузерам")
     web.run_app(init_app(), host='localhost', port=8085)

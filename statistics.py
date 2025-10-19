@@ -41,5 +41,13 @@ class Statistics:
                 } for region in self.data['by_region']
             }
 
+        elif period == 'by_browser':
+            return {
+                browser: {
+                    'total': self.data['by_browser'][browser],
+                    'unique': len(self.data['unique_by_browser'].get(browser, set()))
+                } for browser in self.data['by_browser']
+            }
+
         else:
             return {'error': 'Invalid period'}

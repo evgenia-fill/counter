@@ -9,19 +9,12 @@ import os
 
 
 class TestCounter(unittest.TestCase):
-    # def setUp(self):  # запускается перед каждым тестом
-    #     self.temp_file = tempfile.NamedTemporaryFile(delete=False, mode='w', encoding='utf-8')
-    #     self.temp_file.write('{}')
-    #     self.temp_file.close()
-    #     self.data_store = Data(storage_file=self.temp_file.name)
-    #     self.counter = counter.VisitCounter(storage_file=self.temp_file.name)
-    def setUp(self):
+    def setUp(self): # запускается перед каждым тестом
         self.temp_file = tempfile.NamedTemporaryFile(delete=False, mode='w', encoding='utf-8')
-        self.temp_file.write('{}')  # <-- пустой JSON
+        self.temp_file.write('{}')
         self.temp_file.close()
 
         self.data_store = Data(storage_file=self.temp_file.name)
-        # инициализируем вручную, если структура пустая
         if not self.data_store.data:
             self.data_store.data = {
                 'total': 0,

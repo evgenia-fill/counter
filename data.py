@@ -28,6 +28,9 @@ class Data:
 
         raw['unique_by_region'] = defaultdict(set, {k: set(v) for k, v in raw.get('unique_by_region', {}).items()})
 
+        raw['by_browser'] = defaultdict(int)
+        raw['unique_by_browser'] = defaultdict(set)
+
         if 'total' not in raw:
             raw['total'] = 0
 
@@ -44,7 +47,9 @@ class Data:
             'unique_monthly': {k: list(v) for k, v in self.data['unique_monthly'].items()},
             'unique_yearly': {k: list(v) for k, v in self.data['unique_yearly'].items()},
             'by_region': dict(self.data['by_region']),
-            'unique_by_region': {k: list(v) for k, v in self.data['unique_by_region'].items()}
+            'unique_by_region': {k: list(v) for k, v in self.data['unique_by_region'].items()},
+            'by_browser': dict(self.data['by_browser']),
+            'unique_by_browser': {k: list(v) for k, v in self.data['unique_by_browser'].items()}
         }
 
         with open(self.storage_file, 'w', encoding='utf-8') as f:
