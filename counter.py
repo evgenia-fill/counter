@@ -12,8 +12,16 @@ class VisitCounter:
         self.stat = Statistics(self.data)
 
     async def get_region_from_ip(self, ip):
+        # Если это локальный IP — подставляем публичный
         if ip.startswith("127.") or ip.startswith("::1"):
-            return "Localhost"
+            try:
+                async with aiohttp.ClientSession() as session:
+                    async with session.get("https://api.ipify.org?format=json", timeout=3) as resp:
+                        data = await resp.json()
+                        ip = data.get("ip", "8.8.8.8")  # fallback, если не удалось получить IP
+            except Exception:
+                ip = "8.8.8.8"  # fallback, чтобы не было Unknown
+
         url = f"https://ipwho.is/{ip}"
         try:
             async with aiohttp.ClientSession() as session:
@@ -23,6 +31,7 @@ class VisitCounter:
                         return data.get("country", "Unknown")
         except Exception:
             pass
+
         return "Unknown"
 
     def add_visit(self, visitor_id, region="Unknown", browser="Unknown"):

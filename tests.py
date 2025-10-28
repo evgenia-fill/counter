@@ -9,7 +9,7 @@ import os
 
 
 class TestCounter(unittest.TestCase):
-    def setUp(self): # запускается перед каждым тестом
+    def setUp(self):
         self.temp_file = tempfile.NamedTemporaryFile(delete=False, mode='w', encoding='utf-8')
         self.temp_file.write('{}')
         self.temp_file.close()
@@ -31,7 +31,7 @@ class TestCounter(unittest.TestCase):
 
         self.counter = counter.VisitCounter(storage_file=self.temp_file.name)
 
-    def tearDown(self):  # выполняется после каждого теста; удаляет временный файл, чтобы не засорять файловую систему
+    def tearDown(self):
         os.unlink(self.temp_file.name)
 
     def test_data_save_load(self):

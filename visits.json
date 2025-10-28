@@ -1,5 +1,5 @@
 {
-  "total": 140,
+  "total": 144,
   "unique_total": [
     "::1"
   ],
@@ -7,14 +7,14 @@
     "2025-09-11": 17,
     "2025-10-05": 5,
     "2025-10-06": 13,
-    "2025-10-19": 105
+    "2025-10-19": 109
   },
   "monthly": {
     "2025-09": 17,
-    "2025-10": 123
+    "2025-10": 127
   },
   "yearly": {
-    "2025": 140
+    "2025": 144
   },
   "unique_daily": {
     "2025-09-11": [
@@ -45,7 +45,8 @@
   },
   "by_region": {
     "Unknown": 65,
-    "Localhost": 40
+    "Localhost": 40,
+    "Russia": 4
   },
   "unique_by_region": {
     "Unknown": [
@@ -53,13 +54,16 @@
     ],
     "Localhost": [
       "::1"
+    ],
+    "Russia": [
+      "::1"
     ]
   },
   "by_browser": {
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36": 19
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 YaBrowser/25.8.0.0 Safari/537.36": 4
   },
   "unique_by_browser": {
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36": [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 YaBrowser/25.8.0.0 Safari/537.36": [
       "::1"
     ]
   }
