@@ -152,6 +152,20 @@ async def stats_handler(request):
                 </table>
             </div>
             """
+        elif period == 'by_browser':
+            rows = "".join(
+                f"<tr><td>{browser}</td><td>{v['total']}</td><td>{v['unique']}</td></tr>"
+                for browser, v in sorted(stats.items())
+            )
+            content = f"""
+            <div class="table-wrapper">
+                <h2>Статистика по браузерам</h2>
+                <table>
+                    <tr><th>Браузер</th><th>Всего</th><th>Уникальных</th></tr>
+                    {rows or "<tr><td colspan='3'>Нет данных</td></tr>"}
+                </table>
+            </div>
+            """
         else:
             rows = "".join(
                 f"<tr><td>{k}</td><td>{v['total']}</td><td>{v['unique']}</td></tr>"
